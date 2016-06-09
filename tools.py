@@ -75,15 +75,19 @@ def isIn(a, b):
         return 1
     return 0
 
+def num_of_dot(twit):
+        return len(re.findall("[^\.]\.[^\.]", twit))
+    
+
 
 def features_vec(twit,num):
-    return [len(twit),num_of_word(twit, '#'), num_of_word(twit, '@'), num_of_word(twit, '!'), 'bama' in twit, 'nald' in twit,
+    return [num_of_dot(twit), num_of_word(','), num_of_word('\''), len(twit),num_of_word(twit, '#'), num_of_word(twit, '@'), num_of_word(twit, '!'), 'bama' in twit, 'nald' in twit,
             'lary' in twit, num_of_dots(twit), twit_len(twit), 'resident' in twit, 'ardash' in twit, '&amp' in twit,
             '1989' in twit, 'ball' in twit, 'Soul' in twit] + significant_words(twit,num)
-    return [num_of_word(twit, '#'), num_of_word(twit, '@'), num_of_word(twit, '!'), 'bama' in twit, 'nald' in twit,
+    return [num_of_dot(twit), num_of_word(','), num_of_word('\''), num_of_word(twit, '#'), num_of_word(twit, '@'), num_of_word(twit, '!'), 'bama' in twit, 'nald' in twit,
             'lary' in twit, num_of_dots(twit), twit_len(twit), 'resident' in twit, 'ardash' in twit, '&amp' in twit,
             '1989' in twit,'ball' in twit, 'Soul' in twit]
-    return [num_of_word(twit, '#'), num_of_word(twit, '@'), num_of_word(twit, '!'), 'bama' in twit, 'nald' in twit,
+    return [num_of_dot(twit), num_of_word(','), num_of_word('\''), num_of_word(twit, '#'), num_of_word(twit, '@'), num_of_word(twit, '!'), 'bama' in twit, 'nald' in twit,
             'lary' in twit, num_of_dots(twit), twit_len(twit)]
 
 def my_key(entry):
