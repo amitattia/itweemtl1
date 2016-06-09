@@ -22,8 +22,11 @@ for sen in X:
         word_bag.append(word)
 print('unique length ' + str(len(unique_dict)))
 print('number of words ' + str(len(word_bag)))
-print('words: ')
-for key in unique_dict.keys():
-    print(key + " --> " + str(unique_dict[key]))
+# print('words: ')
+# for key in unique_dict.keys():
+#     print(key + " --> " + str(unique_dict[key]))
 
-print(max(unique_dict, key = unique_dict.get))
+sorted_unique_dictionary = sorted(unique_dict, key = unique_dict.get)
+print('words: ')
+for i in range(len(sorted_unique_dictionary)):
+    print(sorted_unique_dictionary[-(i + 1)] + " --> " + str(unique_dict[sorted_unique_dictionary[-(i + 1)]]))
