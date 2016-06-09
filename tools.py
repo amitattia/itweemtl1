@@ -79,6 +79,8 @@ def num_of_dot(twit):
         return len(re.findall("[^\.]\.[^\.]", twit))
     
 
+def features_vec_names(twit):
+    return [isIn(i,lTweet) for i in names()]
 
 def features_vec(twit,num):
     return [num_of_dot(twit), num_of_word(twit, ','), num_of_word(twit, '\''), len(twit),num_of_word(twit, '#'), num_of_word(twit, '@'), num_of_word(twit, '!'), 'bama' in twit, 'nald' in twit,
@@ -137,6 +139,10 @@ def get_special_words(num_of_special_words=100):
 
 def significant_words(twit,special_words):
 	return [(special_words[i] in twit.lower()) for i in range(len(special_words))]
+
+def names():
+    return ['donald', 'trump' ,'hillary' ,'clinton' ,'barack', 'obama' ,'bernie', 'sanders','taylor', 'swift','oprah', 'winfrey' ,'lance', 'armstrong','cher','shaquille' ,'ONeal','O`Neal','khloe', 'kardashian']
+
 
 def split_by_figure(X, y):
     ret = [[] for i in range(10)]
