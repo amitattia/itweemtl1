@@ -134,6 +134,21 @@ def get_special_words(num_of_special_words=100):
 def significant_words(twit,special_words):
 	return [(special_words[i] in twit.lower()) for i in range(len(special_words))]
 
+def split_by_figure(X, y):
+    ret = [[] for i in range(10)]
+    for i in range(len(X)):
+        ret[y[i]].append(X[i])
+    return ret
+
+def get_figure_data(X,y,figure, n):
+    figures_data = split_by_figure(X, y)
+    ret = []
+    ret.append([figures_data[figure][i] for i in range(int(n/2))])
+    for i in range(10):
+        if not i == figure:
+            ret.append([figures_data[i][j] for j in range(int(n/18))])
+    return ret
+
 # def get_batch(X,y,i):
 #     return tf.constant(X[i*BATCH_SIZE:(i+1)*BATCH_SIZE]),tf.constant(y[i*BATCH_SIZE:(i+1)*BATCH_SIZE])
 # INPUT_SIZE = 10
