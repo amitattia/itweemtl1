@@ -13,9 +13,12 @@ class Poster:
         else:
             self.poster = None
             self.enum = -1
+
+    @staticmethod
     def is_valid_poster(poster):
         return poster in Poster.allowed_posters
 
+    @staticmethod
     def get_poster_by_index(index):
         return Poster.allowed_posters[index]
 
@@ -33,8 +36,6 @@ class Word:
         self.min = 0
         self.argmin = ''
 
-
-
     def use(self, poster):
         self.count += 1
         if Poster.is_valid_poster(poster):
@@ -43,13 +44,12 @@ class Word:
         else:
             self.word_count_by_poster[poster] += 1
 
-
     def calculate_statistics(self, num_of_posts_by_poster):
-        self.word_distribution = self.word_count_by_poster.copy()
+        self.word_distribution = list(self.word_count_by_poster)
         for poster in Poster.allowed_posters:
-            postObj = Poster(poster)
-            if num_of_posts_by_poster[postObj.enum] is not 0:
-                self.word_distribution[postObj.enum] /= num_of_posts_by_poster[postObj.enum]
+            post_obj = Poster(poster)
+            if num_of_posts_by_poster[post_obj.enum] is not 0:
+                self.word_distribution[post_obj.enum] /= float(num_of_posts_by_poster[post_obj.enum])
 
         self.max = np.max(self.word_distribution)
         self.argmax = Poster.get_poster_by_index(np.argmax(self.word_distribution))
@@ -107,12 +107,13 @@ def get_special_words(words, size=10, key=None, poster=None, epsilon=0.0):
                 counter += 1
     return special_words
 
-def get_good_and_bad_words(percentage=0.3, good_words_size=100, bad_words_size=100, good_words_epsilon=0.02, bad_words_epsilon=0.02, figure=None):
-    t, p = load_dataset(percentage = percentage)
-    words = gather_data(t, p)
-    good_words = get_special_words(words, poster = figure, size = good_words_size, key = lambda word: -1 * (word.max - word.mean), epsilon = good_words_epsilon)
-    bad_words = get_special_words(words, poster = figure, size = bad_words_size, key = lambda word: -1 * (word.mean - word.min), epsilon = bad_words_epsilon)
-    return good_words, bad_words
+
+def get_good_words(xTrain, yTrain, good_words_size=10, good_words_epsilon=0.02):
+    words = gather_data(xTrain, yTrain)
+    good_words = []
+    for poster in Poster.allowed_posters:
+        good_words += get_special_words(words, poster = poster, size = good_words_size, key = lambda word: -1 * (word.max - word.mean), epsilon = good_words_epsilon)
+    return [w.word for w in good_words]
 
 
 
