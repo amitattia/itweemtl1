@@ -7,23 +7,34 @@ from data_statistics import *
 from sklearn import datasets, svm, metrics
 from sklearn import ensemble
 from tools import *
-
-def setLabels(y,i):
-      return [1 if j == i else 0 for j in y]
-
-
-def setG(y, i):
-    return [1 if j == i else 0 for j in y]
+def copy_claaifier(tree):
+      newtree = ensemble.RandomForestClassifier(10)
+      newtree.estimators_ = tree.estimators_
+      newtree.classes_ = tree.classes_
+      newtree.n_classes_ = tree.n_classes_
+      newtree.n_outputs_ = tree.n_outputs_
+      newtree.feature_importances_ = tree.feature_importances_
+      newtree.oob_score_ = tree.oob_score_
+      newtree.oob_decision_function_ = tree.oob_decision_function_
+      return newtree      
 
 # Prepare data
 X,y = load_dataset()
-trainX,trainY=subSet(X,y,25000)
+
+#make features
 special_words = get_special_words(2000)
+
+#make training data
+trainX,trainY=subSet(X,y,25000)
 dataX = [features_vec(t,special_words) for t in trainX]
 dataY = trainY
+
+#make validation data
 testX,testY=subSet(X,y,5000,25000)
 dataTestX = [features_vec(t,special_words) for t in testX]
 dataTestY = testY
+
+
 
 # Create a classifier
 classifier = ensemble.RandomForestClassifier(10)
@@ -35,4 +46,5 @@ classifier.fit(dataX, dataY)
 expected = dataTestY
 prediction = classifier.predict(dataTestX)
 
+#prints the validation error
 print(float(sum(prediction[i] == expected[i] for i in range(len(expected))))/len(expected))
