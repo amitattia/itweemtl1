@@ -4,16 +4,6 @@ import re
 import numpy
 from data_statistics import *
 
-def yToGroup(y):
-    if y in [0, 1, 2, 3]:
-        return 0
-    if y in [4, 7, 9]:
-        return 1
-    if y in [6, 8]:
-        return 2
-    if y in [5]:
-        return 3
-
 
 def load_dataset(filename='tweets.csv'):
     train = pandas.read_csv(filename, header=None)
@@ -40,7 +30,7 @@ def num_of_word_tripplets(word):
 
 
 def num_of_tripplets(twit):
-    return len(re.findall("([A-Za-z])\1\1+", word))
+    return len(re.findall("([A-Za-z])\1\1+", twit))
 
 
 def num_of_upper_letters(word):
@@ -80,13 +70,19 @@ def num_of_dot(twit):
     
 
 def features_vec_names(twit):
+    lTweet = twit.lower()
     return [isIn(i,lTweet) for i in names()]
 
+def bad_features_vec(twit, words):
+    return (-1)*significant_words(twit,words)
+
 def features_vec(twit, words):
-    return significant_words(twit,words)
-    return [num_of_dot(twit), num_of_word(twit, ','), num_of_word(twit, '\''), len(twit),num_of_word(twit, '#'), num_of_word(twit, '@'), num_of_word(twit, '!'), 'bama' in twit, 'nald' in twit,
+    return [num_of_dot(twit), num_of_word(twit, ','), num_of_word(twit, '\''), len(twit),num_of_word(twit, '#'), num_of_word(twit, '@'),
+            num_of_word(twit, '!'), 'bama' in twit, 'nald' in twit,
             'lary' in twit, num_of_dots(twit), twit_len(twit), 'resident' in twit, 'ardash' in twit, '&amp' in twit,
-            '1989' in twit, 'ball' in twit, 'Soul' in twit] + significant_words(twit,num)
+            '1989' in twit, 'ball' in twit, 'Soul' in twit, num_of_upper_word(twit), num_of_twit_tripplets(twit)] + significant_words(twit,words) + features_vec_names(twit)
+    return significant_words(twit,words)
+
     return [num_of_dot(twit), num_of_word(','), num_of_word('\''), num_of_word(twit, '#'), num_of_word(twit, '@'), num_of_word(twit, '!'), 'bama' in twit, 'nald' in twit,
             'lary' in twit, num_of_dots(twit), twit_len(twit), 'resident' in twit, 'ardash' in twit, '&amp' in twit,
             '1989' in twit,'ball' in twit, 'Soul' in twit]
