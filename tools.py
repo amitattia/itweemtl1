@@ -2,7 +2,7 @@ import pandas
 import operator
 import re
 import numpy
-
+from data_statistics import *
 
 def yToGroup(y):
     if y in [0, 1, 2, 3]:
@@ -82,7 +82,8 @@ def num_of_dot(twit):
 def features_vec_names(twit):
     return [isIn(i,lTweet) for i in names()]
 
-def features_vec(twit,num):
+def features_vec(twit, words):
+    return significant_words(twit,words)
     return [num_of_dot(twit), num_of_word(twit, ','), num_of_word(twit, '\''), len(twit),num_of_word(twit, '#'), num_of_word(twit, '@'), num_of_word(twit, '!'), 'bama' in twit, 'nald' in twit,
             'lary' in twit, num_of_dots(twit), twit_len(twit), 'resident' in twit, 'ardash' in twit, '&amp' in twit,
             '1989' in twit, 'ball' in twit, 'Soul' in twit] + significant_words(twit,num)
